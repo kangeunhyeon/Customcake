@@ -12,4 +12,5 @@
 
 4.clienk directory에 "npm install"을 입력합니다.
 
-//test 수영.
+
+//Git 너무 어려워~!~!
