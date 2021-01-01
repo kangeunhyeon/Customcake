@@ -37,6 +37,23 @@ router.post('/', (req, res) => {
     });
 })
 
+router.post('/products', (req, res) => {
+  let limit = req.body.limit ? parseInt(req.body.limit) : 20;
+  let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+  //product collection에 들어 있는 모든 상품 정보를 가져오기
+  //product컬랙션 안에있는 데이터를 찾는다
+  Product.find()
+    .populate("writer") //로그인한 사람에 대한 정보를 가져옴
+    .skip(skip)
+    .limit(limit)
+    .exec((err,productInfo)=>{
+      if(err) return res.status(400).json({success:false,err})
+      return res.status(200).json({
+          success:true,productInfo,
+          PostSize:productInfo.length
+        })
+    })
+})
 
 
 module.exports = router;
