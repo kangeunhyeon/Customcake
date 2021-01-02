@@ -5,12 +5,18 @@ import Meta from 'antd/lib/card/Meta';
 import ImageSlider from '../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
 import {regions} from './Sections/Datas';
+import SearchFeature from './Sections/SearchFeature'
+
 function LandingPage() {
     const [Products, setProducts] = useState([])
     const [Skip,setSkip] = useState(0)
     const [Limit,setLimit] = useState(8)
     const [PostSize,setPostSize] = useState(0)
-
+    const [Filters, setFilters] = useState({
+        regions : []
+    })
+    const [SerchTerm, setSerchTerm] = useState("")
+    
     useEffect(()=>{
         let body = {
             skip : Skip,
@@ -50,7 +56,7 @@ function LandingPage() {
         //console.log('product',product)
         return <Col lg={6} md={8} xs={24} key={index}>
             <Card 
-                cover={<ImageSlider images={product.images}/>}
+                cover={<a href={`/product/${product._id}`}><ImageSlider images={product.images}/></a>}
                 >
                 <Meta
                 title={product.title}
@@ -58,11 +64,38 @@ function LandingPage() {
             </Card>
             </Col>
     })
-  
+    const showFilteredResults =(filters) => {
+        let body = {
+            skip : 0,
+            limit : Limit,
+            filters : filters
+        }
+        getProducts(body)
+        setSkip(0)
+    }
+    const handleFilters = (filter, category) => {
+        const newFilters = {...Filters}
+        newFilters[category] = filter
 
+        showFilteredResults(newFilters)
+    }
+    //newSerchTerm은 자식컴포넌트의 event.currentTarget.value
+    const updateSearchTerm = (newSerchTerm) =>{
+
+        let body = {
+            skip :0,
+            limit : Limit,
+            filters : Filters,
+            searchTerm : newSerchTerm
+        }
+        setSkip(0)
+        setSerchTerm(newSerchTerm)
+        getProducts(body)
+    }
+    
     return (
        <div style={{width:'75%',margin:'3rem auto'}}>
-           <CheckBox list = {regions}/>
+           <CheckBox list = {regions} handleFilters={filters => handleFilters(filters,"regions")} />
 
           
           
@@ -72,6 +105,13 @@ function LandingPage() {
                     <Icon type="rocket"/>
                 </h2>
             </div>
+
+            <div style={{display:'flex', justifyContent:'flex-end',margin:'1rem auto'}}>
+                <SearchFeature
+                    refreshFunction={updateSearchTerm}
+                /> 
+            </div>
+
                 <Row gutter={[16,16]}>
                     {renderCards}
                 </Row>
