@@ -27,6 +27,7 @@ function LoginPage(props) {
       initialValues={{
         email: initialEmail,
         password: '',
+        authcheck:'',
       }}
       validationSchema={Yup.object().shape({
         email: Yup.string()
@@ -40,11 +41,14 @@ function LoginPage(props) {
         setTimeout(() => {
           let dataToSubmit = {
             email: values.email,
-            password: values.password
+            password: values.password,
+            authcheck : values.authcheck
           };
 
           dispatch(loginUser(dataToSubmit))
+           
             .then(response => {
+               console.log(response.payload)
               if (response.payload.loginSuccess) {
                 window.localStorage.setItem('userId', response.payload.userId);
                 if (rememberMe === true) {
