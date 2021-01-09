@@ -105,7 +105,7 @@ function LandingPage() {
                     <Icon type="rocket"/>
                 </h2>
             </div>
-
+            
             <div style={{display:'flex', justifyContent:'flex-end',margin:'1rem auto'}}>
                 <SearchFeature
                     refreshFunction={updateSearchTerm}

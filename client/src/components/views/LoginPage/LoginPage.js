@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { loginUser } from "../../../_actions/user_actions";
 import { Formik } from 'formik';
@@ -7,6 +7,8 @@ import { Form, Icon, Input, Button, Checkbox, Typography } from 'antd';
 import { useDispatch } from "react-redux";
 
 const { Title } = Typography;
+
+const {naver} =window;
 
 function LoginPage(props) {
   const dispatch = useDispatch();
@@ -20,6 +22,22 @@ function LoginPage(props) {
   };
 
   const initialEmail = localStorage.getItem("rememberMe") ? localStorage.getItem("rememberMe") : '';
+
+  
+  function Naver() {
+    const naverLogin = new naver.LoginWithNaverId({
+      clientId:'vFpd2Sm68m88NLjZ2OMI',
+      callbackUrl :'http://localhost:3000',
+      callbackHandle: true,
+      loginButton: {
+        color:'black',
+        type:1,
+        height:20,
+      }
+  });
+  naverLogin.init();
+}
+
 
   return (
     <Formik
@@ -78,6 +96,8 @@ function LoginPage(props) {
           handleSubmit,
           handleReset,
         } = props;
+
+
         return (
           <div className="app">
 
@@ -133,17 +153,31 @@ function LoginPage(props) {
                   <Button type="primary" htmlType="submit" className="login-form-button" style={{ minWidth: '100%' }} disabled={isSubmitting} onSubmit={handleSubmit}>
                     Log in
                 </Button>
+                <Button onClick={Naver}>
+                    Naver
+                </Button>
+
                 </div>
                 Or <a href="/register">register now!</a>
+                
+                <div id="naverIdLogin"></div>
+
+
+
+  
+                
               </Form.Item>
+    
+            
             </form>
-          </div>
+          </div>          
         );
       }}
     </Formik>
+    
   );
+  
 };
-
 export default withRouter(LoginPage);
 
 
