@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Form, Icon, Input, Button, Checkbox, Typography } from 'antd';
 import { useDispatch } from "react-redux";
+import GoogleLogin from 'react-google-login';
 
 const { Title } = Typography;
 
@@ -136,6 +137,13 @@ function LoginPage(props) {
                 </div>
                 Or <a href="/register">register now!</a>
               </Form.Item>
+              <GoogleLogin
+                clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                buttonText="Login"
+                // onSuccess={responseGoogle}
+                // onFailure={responseGoogle}
+                cookiePolicy={'single_host_origin'}
+              />
             </form>
           </div>
         );

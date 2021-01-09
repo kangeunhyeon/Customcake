@@ -7,7 +7,7 @@ const { Title } = Typography;
 const { TextArea } = Input;
 
 //디자인 종류
-const Continent = [
+const Regions = [
     {
         key: 1,
         value: "디자인1"
@@ -44,7 +44,7 @@ function UploadProductPage(props) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState(0);
-    const [continent, setContinent] = useState(1);
+    const [regions, setRegions] = useState(1);
     const [images, setImages] = useState([]);
 
     const nameChangeHandler = e => {
@@ -62,9 +62,9 @@ function UploadProductPage(props) {
         setPrice(value);
     }
 
-    const continentChangeHandler = e => {
+    const regionsChangeHandler = e => {
         const { value } = e.target;
-        setContinent( value );
+        setRegions( value );
     }
 
     const updateImages = (newPath) => {
@@ -74,7 +74,7 @@ function UploadProductPage(props) {
     const submitHandler = (e) => {
         e.preventDefault();
 
-        if( !name || !description || !price || !continent || !images) {
+        if( !name || !description || !price || !regions || !images) {
             return alert("모든 값을 입력해주세요.");
         }
 
@@ -84,7 +84,7 @@ function UploadProductPage(props) {
             title: name,
             description: description,
             price: price,
-            continent:continent,
+            regions:regions,
             images: images
         }
         
@@ -139,15 +139,15 @@ function UploadProductPage(props) {
                 <br />
                 <br />
                 <select
-                    onChange={continentChangeHandler}
-                    value={continent}
+                    onChange={regionsChangeHandler}
+                    value={regions}
                 >
-                    {Continent.map(continent => (
+                    {Regions.map(regions => (
                         <option
-                            key={continent.key}
-                            value={continent.key}
+                            key={regions.key}
+                            value={regions.key}
                         >
-                            {continent.value}
+                            {regions.value}
                         </option>
                     ))}
                 </select>
