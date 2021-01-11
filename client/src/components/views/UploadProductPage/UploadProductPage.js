@@ -92,7 +92,7 @@ function UploadProductPage(props) {
             .then(response => {
                 if( response.data.success) {
                     alert("상품 업로드에 성공해부럿");
-                    props.history.push('/');
+                    props.history.push('/Providerlogin');
                 } else {
                     alert("상품 업로드에 실패!");
                 }

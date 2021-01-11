@@ -68,5 +68,14 @@ router.get("/logout", auth, (req, res) => {
         });
     });
 });
+router.get("/usersindex",(req,res)=>{
+   
+    User.find({authcheck : ['1','2','3']})
+    .exec((err,userindex)=>{
+      console.log(userindex)
+      if(err) return res.status(400).send(err);
+      res.status(200).json({success:true,userindex})
+    })
+ })
 
 module.exports = router;

@@ -33,9 +33,6 @@ function RightMenu(props) {
   } else {
     return (
       <Menu mode={props.mode}>
-        <Menu.Item key="upload">
-          <a href="/product/upload">업로드</a>
-        </Menu.Item>
         <Menu.Item key="logout">
           <a onClick={logoutHandler}>로그아웃</a>
         </Menu.Item>
