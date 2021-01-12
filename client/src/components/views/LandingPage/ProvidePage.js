@@ -24,11 +24,10 @@ function ProvidePage() {
             }
             getProducts(body)
         },[])
-        
+    
         const getProducts = (body)=>{
-            axios.post('/api/product/products')
+            axios.post('/api/product/products',body)
             .then(response=>{
-                
                 if(response.data.success){
                     console.log(response.data)
                     if(body.loadMore){
@@ -42,6 +41,19 @@ function ProvidePage() {
                 }
             })
         }
+        const [UsersAuth, setUsersAuth] = useState([])
+
+        useEffect(() => {
+            axios.get(`/api/users/usersindex`)
+                .then(response => {
+                    if(response.data.success){
+                        console.log('response.data.userindex',response.data.userindex[0].authcheck)
+                        setUsersAuth(response.data.userindex)
+                    }else{
+                        alert('상세 정보 가져오기를 실패했습니다.')
+                    }
+                })
+        }, [])
         const loadMoreHandler = () => {
             let skip = Skip + Limit
             let body = {
@@ -96,9 +108,9 @@ function ProvidePage() {
         
         return (
            <div style={{width:'75%',margin:'3rem auto'}}>
-               
+               <CheckBox list = {regions} handleFilters={filters => handleFilters(filters,"regions")} />
                 <div style={{textAlign:'center'}}>
-                    <h2>
+                    <h2>고객 맞춤 주문 제작 케이크
                         <Icon type="rocket"/>
                     </h2>
                     <Button type="primary" ghost> <a href="/product/upload">업로드</a></Button>

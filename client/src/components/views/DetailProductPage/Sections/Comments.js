@@ -1,14 +1,16 @@
 import React,{useState, useEffect} from 'react'
 import Axios from 'axios'
+import { Form, Button, Input} from 'antd'
 import { useSelector } from 'react-redux'
 import SingleComment from './SingleComment'
 import ReplyComment from './ReplyComment'
+const { TextArea } = Input;
 
-function Comment(props) {    
+function Comments(props) {   
     const postId = props.postId;
     const user = useSelector(state => state.user);
     const [CommentValue, setCommentValue] = useState("")
-
+    console.log(postId)
     const handleChange = (event) => {
         setCommentValue(event.currentTarget.value)
     }   
@@ -53,20 +55,20 @@ function Comment(props) {
             ))}
             {/* Root Comment Form */}
 
-            <form style={{display: 'flex'}} onSubmit={onSubmit}>
-                <textarea 
+            <Form style={{display: 'flex'}} onSubmit={onSubmit}>
+                <TextArea 
                     style={{width: '100%', borderRadius: '5px', resize: 'none'}}
                     onChange={handleChange}
                     value={CommentValue}
                     placeholder="코멘트를 작성해주세요."
                 />                
                 <br/>
-                <button style={{width:'20%', height: '52px'}} onClick={onSubmit}>Submit</button>
-            </form>
+                <Button style={{width:'20%', height: '52px'}} onClick={onSubmit}>Submit</Button>
+            </Form>
 
 
         </div>
     )
 }
 
-export default Comment
+export default Comments
