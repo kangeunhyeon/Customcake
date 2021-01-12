@@ -72,7 +72,11 @@ router.get("/usersindex",(req,res)=>{
    
     User.find({authcheck : ['1','2','3']})
     .exec((err,userindex)=>{
+<<<<<<< HEAD
       //console.log(userindex)
+=======
+      console.log(userindex)
+>>>>>>> 7950d7c671386bdf69294fdbcf5fd51062878c70
       if(err) return res.status(400).send(err);
       res.status(200).json({success:true,userindex})
     })
