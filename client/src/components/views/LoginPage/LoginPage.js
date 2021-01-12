@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { loginUser } from "../../../_actions/user_actions";
 import { Formik } from 'formik';
@@ -6,10 +6,25 @@ import * as Yup from 'yup';
 import { Form, Icon, Input, Button, Checkbox, Typography } from 'antd';
 import { useDispatch } from "react-redux";
 import GoogleLogin from 'react-google-login';
+import axios from "axios";
 
 const { Title } = Typography;
 
 function LoginPage(props) {
+  const [UsersAuth, setUsersAuth] = useState([])
+
+  useEffect(() => {
+    axios.get(`/api/users/usersindex`)
+        .then(response => {
+            if(response.data.success){
+                console.log('response.data.userindex',response.data.userindex[0].authcheck)
+                setUsersAuth(response.data.userindex)
+            }else{
+                alert('상세 정보 가져오기를 실패했습니다.')
+            }
+        })
+}, [])
+ 
   const dispatch = useDispatch();
   const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
 
@@ -40,19 +55,35 @@ function LoginPage(props) {
         setTimeout(() => {
           let dataToSubmit = {
             email: values.email,
-            password: values.password
+            password: values.password,
           };
 
           dispatch(loginUser(dataToSubmit))
+           
             .then(response => {
+              //console.log('asds',dataToSubmit)
               if (response.payload.loginSuccess) {
                 window.localStorage.setItem('userId', response.payload.userId);
                 if (rememberMe === true) {
                   window.localStorage.setItem('rememberMe', values.id);
+                  
                 } else {
                   localStorage.removeItem('rememberMe');
                 }
-                props.history.push("/");
+                for(let i=0;i<=UsersAuth.length;i++){
+                  //console.log('userAuth : ',UsersAuth[i].authcheck);
+                  if(UsersAuth[i].authcheck === "1" && dataToSubmit.email ===UsersAuth[i].email){
+                    props.history.push("/"); //사용자
+                  }
+                  else if(UsersAuth[i].authcheck === "3" && dataToSubmit.email === UsersAuth[i].email){
+                    props.history.push("/adminlogin"); //관리자
+                  }
+                  else if(UsersAuth[i].authcheck === "2" && dataToSubmit.email === UsersAuth[i].email){
+                    props.history.push("/Providerlogin"); //공급자
+                }
+                }
+
+                
               } else {
                 setFormErrorMessage('Check out your Account or Password again')
               }
@@ -84,7 +115,7 @@ function LoginPage(props) {
 
             <Title level={2}>Log In</Title>
             <form onSubmit={handleSubmit} style={{ width: '350px' }}>
-
+              
               <Form.Item required>
                 <Input
                   id="email"

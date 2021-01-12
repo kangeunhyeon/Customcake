@@ -28,6 +28,8 @@ const regions = [
         "name" : "마포구"
     }
 ] 
+
+
 export {
     regions
 }

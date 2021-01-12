@@ -37,14 +37,14 @@ const tailFormItemLayout = {
 function RegisterPage(props) {
   const dispatch = useDispatch();
   return (
-
     <Formik
       initialValues={{
         email: '',
         lastName: '',
         name: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        authcheck:''
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string()
@@ -59,16 +59,18 @@ function RegisterPage(props) {
           .required('Password is required'),
         confirmPassword: Yup.string()
           .oneOf([Yup.ref('password'), null], 'Passwords must match')
-          .required('Confirm Password is required')
+          .required('Confirm Password is required'),
+        authcheck: Yup.string()
+          .required('Confirm Password is authcheck')
       })}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
-
           let dataToSubmit = {
             email: values.email,
             password: values.password,
             name: values.name,
             lastname: values.lastname,
+            authcheck : values.authcheck,
             image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
           };
 
@@ -185,7 +187,23 @@ function RegisterPage(props) {
                   <div className="input-feedback">{errors.confirmPassword}</div>
                 )}
               </Form.Item>
-
+              <Form.Item required label="auth(1,2,3)" hasFeedback>
+                <Input
+                  id="authcheck"
+                  placeholder="Enter your auth"
+                  type="auth"
+                  value={values.authcheck}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className={
+                    errors.authcheck && touched.authcheck ? 'text-input error' : 'text-input'
+                  }
+                />
+                {errors.authcheck && touched.authcheck && (
+                  <div className="input-feedback">{errors.authcheck}</div>
+                )}           
+              </Form.Item>
+              
               <Form.Item {...tailFormItemLayout}>
                 <Button onClick={handleSubmit} type="primary" disabled={isSubmitting}>
                   Submit
