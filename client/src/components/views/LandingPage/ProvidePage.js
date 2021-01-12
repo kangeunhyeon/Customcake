@@ -24,18 +24,11 @@ function ProvidePage() {
             }
             getProducts(body)
         },[])
-<<<<<<< HEAD
-    
-        const getProducts = (body)=>{
-            axios.post('/api/product/products',body)
-            .then(response=>{
-=======
         
         const getProducts = (body)=>{
             axios.post('/api/product/products')
             .then(response=>{
                 
->>>>>>> 7950d7c671386bdf69294fdbcf5fd51062878c70
                 if(response.data.success){
                     console.log(response.data)
                     if(body.loadMore){
@@ -49,22 +42,6 @@ function ProvidePage() {
                 }
             })
         }
-<<<<<<< HEAD
-        const [UsersAuth, setUsersAuth] = useState([])
-
-        useEffect(() => {
-            axios.get(`/api/users/usersindex`)
-                .then(response => {
-                    if(response.data.success){
-                        console.log('response.data.userindex',response.data.userindex[0].authcheck)
-                        setUsersAuth(response.data.userindex)
-                    }else{
-                        alert('상세 정보 가져오기를 실패했습니다.')
-                    }
-                })
-        }, [])
-=======
->>>>>>> 7950d7c671386bdf69294fdbcf5fd51062878c70
         const loadMoreHandler = () => {
             let skip = Skip + Limit
             let body = {
@@ -119,15 +96,9 @@ function ProvidePage() {
         
         return (
            <div style={{width:'75%',margin:'3rem auto'}}>
-<<<<<<< HEAD
-               <CheckBox list = {regions} handleFilters={filters => handleFilters(filters,"regions")} />
-                <div style={{textAlign:'center'}}>
-                    <h2>고객 맞춤 주문 제작 케이크
-=======
                
                 <div style={{textAlign:'center'}}>
                     <h2>
->>>>>>> 7950d7c671386bdf69294fdbcf5fd51062878c70
                         <Icon type="rocket"/>
                     </h2>
                     <Button type="primary" ghost> <a href="/product/upload">업로드</a></Button>

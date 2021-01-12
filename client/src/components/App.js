@@ -9,8 +9,10 @@ import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
 import UploadProductPage from "./views/UploadProductPage/UploadProductPage.js";
 import DetailProductPage from "./views/DetailProductPage/DetailProductPage.js";
-import UserPage from "./views/LandingPage/ProvidePage.js";
+import ProvidePage  from "./views/LandingPage/ProvidePage.js";
 import AdminPage from "./views/LandingPage/AdminPage.js";
+
+
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -26,7 +28,7 @@ function App() {
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           <Route exact path="/product/upload" component={Auth(UploadProductPage, true)} />
           <Route exact path="/product/:productId" component={Auth(DetailProductPage, null)} />
-          <Route exact path="/Providerlogin" component={Auth(UserPage, null)} />
+          <Route exact path="/Providerlogin" component={Auth(ProvidePage, null)} />
           <Route exact path="/adminlogin" component={Auth(AdminPage, null)} />
         </Switch>
       </div>

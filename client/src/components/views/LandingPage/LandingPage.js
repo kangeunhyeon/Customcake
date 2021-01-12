@@ -10,7 +10,7 @@ import SearchFeature from './Sections/SearchFeature'
 function LandingPage() {
     const [Products, setProducts] = useState([])
     const [Skip,setSkip] = useState(0)
-    const [Limit,setLimit] = useState(8)
+    const [Limit,setLimit] = useState(19)
     const [PostSize,setPostSize] = useState(0)
     const [Filters, setFilters] = useState({
         regions : []
@@ -41,6 +41,7 @@ function LandingPage() {
             }
         })
     }
+
     const loadMoreHandler = () => {
         let skip = Skip + Limit
         let body = {
@@ -51,19 +52,25 @@ function LandingPage() {
         getProducts(body)
         setSkip(skip)
     }
-
     const renderCards = Products.map((product,index)=>{
-        //console.log('product',product)
-        return <Col lg={6} md={8} xs={24} key={index}>
-            <Card 
-                cover={<a href={`/product/${product._id}`}><ImageSlider images={product.images}/></a>}
-                >
-                <Meta
-                title={product.title}
-                description={`$${product.price}`}/>
-            </Card>
-            </Col>
+        if(product.writer.authcheck==2){
+            
+                return <Col lg={6} md={8} xs={24} key={index}>
+                    <Card 
+                        cover={<a href={`/product/${product._id}`}><ImageSlider images={product.images}/></a>}
+                        >
+                        <Meta
+                        title={product.title}
+                        description={`$${product.price}`}/>
+                        <Meta
+                        title={product.writer.name}
+                        />
+                    </Card>
+                </Col>
+            
+        }
     })
+   
     const showFilteredResults =(filters) => {
         let body = {
             skip : 0,
@@ -115,6 +122,7 @@ function LandingPage() {
                 <Row gutter={[16,16]}>
                     {renderCards}
                 </Row>
+               
             <br/>
             {PostSize >= Limit &&   
             <div style={{display:'flex',justifyContent:'center'}}>
@@ -129,5 +137,4 @@ function LandingPage() {
        </div>
     )
 }
-
 export default LandingPage
