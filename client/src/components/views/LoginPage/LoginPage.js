@@ -113,6 +113,7 @@ function LoginPage(props) {
         return (
           <div className="app">
 
+               
             <Title level={2}>Log In</Title>
             <form onSubmit={handleSubmit} style={{ width: '350px' }}>
               
@@ -168,10 +169,11 @@ function LoginPage(props) {
                 </div>
                 Or <a href="/register">register now!</a>
               </Form.Item>
+
               <GoogleLogin
                 clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
                 buttonText="Login"
-                // onSuccess={responseGoogle}
+                 onSuccess={responseGoogle}
                 // onFailure={responseGoogle}
                 cookiePolicy={'single_host_origin'}
               />
