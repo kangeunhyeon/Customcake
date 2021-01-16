@@ -26,6 +26,10 @@ const userSchema = mongoose.Schema({
         type: String,
         maxlength:50 
     },
+    nickname: {
+        type:String,
+        maxlength: 50
+    },
     role : {
         type:Number,
         default: 0 
@@ -37,6 +41,8 @@ const userSchema = mongoose.Schema({
     tokenExp :{
         type: Number
     }
+
+
 })
 
 

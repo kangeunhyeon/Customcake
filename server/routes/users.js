@@ -1,12 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require("../models/User");
-
 const { auth } = require("../middleware/auth");
 
 //=================================
 //             User
 //=================================
+
+
+var client_id = 'qTbOqBYovcn5ShbkqgHR';
+var client_secret = 'zmPr1cwKh2';
+var state = "RAMDOM_STATE";
+var redirectURI = encodeURI("http://localhost:3000/api/users/naver");
+var api_url = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + client_id + '&redirect_uri=' + redirectURI + '&state=' + state;
+
 
 router.get("/auth", auth, (req, res) => {
     res.status(200).json({
@@ -69,17 +76,53 @@ router.get("/logout", auth, (req, res) => {
     });
 });
 router.get("/usersindex",(req,res)=>{
-   
     User.find({authcheck : ['1','2','3']})
     .exec((err,userindex)=>{
-<<<<<<< HEAD
       //console.log(userindex)
-=======
-      console.log(userindex)
->>>>>>> 7950d7c671386bdf69294fdbcf5fd51062878c70
       if(err) return res.status(400).send(err);
       res.status(200).json({success:true,userindex})
     })
  })
 
+
+ router.get('/naver', (req, res) =>{
+   console.log('naver서버 접속')
+   api_url = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + client_id + '&redirect_uri=' + redirectURI + '&state=' + state;
+   res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
+   res.end("<a href='"+ api_url + "'><img height='50' src='http://static.nid.naver.com/oauth/small_g_in.PNG'/></a>");
+ });
+ router.get('/naver/callback', (req, res) => {
+   console.log('naver/callback서버접속')
+    code = req.query.code;
+    state = req.query.state;
+    api_url = 'https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id='
+     + client_id + '&client_secret=' + client_secret + '&redirect_uri=' + redirectURI + '&code=' + code + '&state=' + state;
+    
+     var request = require('request');
+     var options = {
+        url: api_url,
+        headers: {'X-Naver-Client-Id':client_id, 'X-Naver-Client-Secret': client_secret}
+     };  
+   
+
+     request.get(options, function (error, response, body) {
+     
+      if (!error && response.statusCode == 200) {
+       
+        res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
+        res.end(body);
+      } else {
+       
+        res.status(response.statusCode).end();
+        console.log('error = ' + response.statusCode);
+      }
+    });
+  });
+//   router.listen(3000, function () {
+//    console.log('http://127.0.0.1:3000/naverlogin app listening on port 3000!');
+//  });
+
+
+
 module.exports = router;
+

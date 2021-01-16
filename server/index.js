@@ -36,15 +36,7 @@ app.use(cookieParser());
 app.use('/api/users', require('./routes/users'));
 app.use('/api/product', require('./routes/product'))
 app.use('/api/comment', require('./routes/comment'))
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 app.use('/api/like', require('./routes/like'));
->>>>>>> 7950d7c671386bdf69294fdbcf5fd51062878c70
-
-=======
-app.use('/api/like', require('./routes/like'));
->>>>>>> ehkang
 //use this to show the image you have in node js server to client (react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
 app.use('/uploads', express.static('uploads'));

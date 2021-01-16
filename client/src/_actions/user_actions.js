@@ -5,7 +5,7 @@ import {
     AUTH_USER,
     LOGOUT_USER,
 } from './types';
-import { USER_SERVER } from '../components/Config.js';
+import { USER_SERVER,BACK_SERVER_URL } from '../components/Config.js';
 
 export function registerUser(dataToSubmit){
     const request = axios.post(`${USER_SERVER}/register`,dataToSubmit)
@@ -43,6 +43,17 @@ export function logoutUser(){
 
     return {
         type: LOGOUT_USER,
+        payload: request
+    }
+}
+
+export function loginWithNaver(dataToSubmit){
+    const request = axios.get(`http://localhost:3000/api/users/naver`,dataToSubmit)
+    .then(response => response.data);
+     console.log(request, '오늘밤주인공은나야나');
+     
+    return {
+        type: LOGIN_USER,
         payload: request
     }
 }
