@@ -84,6 +84,7 @@ router.get("/usersindex",(req,res)=>{
     })
  })
 
+<<<<<<< HEAD
 
  router.get('/naver', (req, res) =>{
    console.log('naver서버 접속')
@@ -126,3 +127,8 @@ router.get("/usersindex",(req,res)=>{
 
 module.exports = router;
 
+=======
+ 
+
+module.exports = router;
+>>>>>>> a3db11a93004069e26574799ef608aa654ffdfb5

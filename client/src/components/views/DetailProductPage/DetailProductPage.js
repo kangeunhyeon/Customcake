@@ -2,7 +2,8 @@ import React,{useEffect,useState} from 'react'
 import axios from 'axios'
 import ProductImage from './Sections/ProductImage'
 import ProductInfo from './Sections/ProductInfo'
-import Comments from './Sections/Comments'
+import Comment from './Sections/Comments'
+import LikeDislike from './Sections/LikeDislike'
 import {Row, Col, List} from 'antd';
 
 function DetailProductPage(props) {
@@ -10,7 +11,8 @@ function DetailProductPage(props) {
     const productId = props.match.params.productId
     const variable = {productId: productId}
     const [Product, setProduct] = useState({})
-    const [CommentLists, setCommentLists] = useState([])
+    const [Comments, setComments] = useState([])
+    
 
     useEffect(() => {
         axios.get(`/api/product/products_by_id?id=${productId}&type=single`)
@@ -60,10 +62,8 @@ function DetailProductPage(props) {
             </Row>
             
         {/* Conments */}
-        <Comments refreshFunction={refreshFunction} commentLists={CommentLists} postId={productId} />
-            
-
-                
+        <Comment refreshFunction={refreshFunction} commentLists={Comments} postId={productId} />
+                    
             </div>
         )
     
