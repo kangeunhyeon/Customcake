@@ -11,7 +11,7 @@ function DetailProductPage(props) {
     const productId = props.match.params.productId
     const variable = {productId: productId}
     const [Product, setProduct] = useState({})
-    const [Comments, setComments] = useState([])
+    const [CommentLists, setCommentLists] = useState([])
     
 
     useEffect(() => {
@@ -62,7 +62,7 @@ function DetailProductPage(props) {
             </Row>
             
         {/* Conments */}
-        <Comment refreshFunction={refreshFunction} commentLists={Comments} postId={productId} />
+        <Comment refreshFunction={refreshFunction} CommentLists={CommentLists} postId={productId} />
                     
             </div>
         )

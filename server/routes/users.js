@@ -1,78 +1,120 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
+const { OAuth2Client } = require("google-auth-library");
+const config = require("../config/key");
 
 //=================================
 //             User
 //=================================
-
-
-var client_id = 'qTbOqBYovcn5ShbkqgHR';
-var client_secret = 'zmPr1cwKh2';
-var state = "RAMDOM_STATE";
-var redirectURI = encodeURI("http://localhost:3000/api/users/naver");
-var api_url = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + client_id + '&redirect_uri=' + redirectURI + '&state=' + state;
-
-
 router.get("/auth", auth, (req, res) => {
-    res.status(200).json({
-        _id: req.user._id,
-        isAdmin: req.user.role === 0 ? false : true,
-        isAuth: true,
-        email: req.user.email,
-        authcheck: req.user.authcheck,
-        name: req.user.name,
-        lastname: req.user.lastname,
-        role: req.user.role,
-        image: req.user.image,
-    });
+  res.status(200).json({
+      _id: req.user._id,
+      isAdmin: req.user.role === 0 ? false : true,
+      isAuth: true,
+      email: req.user.email,
+      name: req.user.name,
+      lastname: req.user.lastname,
+      role: req.user.role,
+      image: req.user.image,
+      company: req.user.company
+  });
 });
 
 router.post("/register", (req, res) => {
 
-    const user = new User(req.body);
+  const user = new User(req.body);
 
-    user.save((err, doc) => {
-        if (err) return res.json({ success: false, err });
-        return res.status(200).json({
-            success: true
-        });
-    });
+  user.save((err, doc) => {
+      // console.log(doc)
+      if (err) return res.json({ success: false, err });
+      return res.status(200).json({
+          success: true
+      });
+  });
 });
 
 router.post("/login", (req, res) => {
-    User.findOne({ email: req.body.email }, (err, user) => {
-        if (!user)
-            return res.json({
-                loginSuccess: false,
-                message: "Auth failed, email not found"
-            });
+  User.findOne({ email: req.body.email }, (err, user) => {
+      if (!user)
+          return res.json({
+              loginSuccess: false,
+              message: "Auth failed, account not found"
+          });
 
-        user.comparePassword(req.body.password, (err, isMatch) => {
-            if (!isMatch)
-                return res.json({ loginSuccess: false, message: "Wrong password" });
+      user.comparePassword(req.body.password, (err, isMatch) => {
+          if (!isMatch)
+              return res.json({ loginSuccess: false, message: "Wrong password" });
 
-            user.generateToken((err, user) => {
-                if (err) return res.status(400).send(err);
-                res.cookie("w_authExp", user.tokenExp);
-                res
-                    .cookie("w_auth", user.token)
-                    .status(200)
-                    .json({
-                        loginSuccess: true, userId: user._id
-                    });
-            });
-        });
-    });
+          user.generateToken((err, user) => {
+              if (err) return res.status(400).send(err);
+              res.status(200).json({
+                  loginSuccess: true, userId: user._id,
+                  tokenExp: user.tokenExp, token: user.token,
+                  company: user.company
+              });
+          });
+      });
+  });
 });
 
 router.get("/logout", auth, (req, res) => {
-    User.findOneAndUpdate({ _id: req.user._id }, { token: "", tokenExp: "" }, (err, doc) => {
-        if (err) return res.json({ success: false, err });
-        return res.status(200).send({
-            success: true
+  User.findOneAndUpdate({ _id: req.user._id }, { token: "", tokenExp: "" }, (err, doc) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).send({
+          success: true
+      });
+  });
+});
+
+const client = new OAuth2Client(config.GOOGLE_CLIENT_ID);
+router.post("/googleLogin", (req, res) => {
+  const idToken = req.body.tokenId;
+  client
+    .verifyIdToken({ idToken, audience: config.GOOGLE_CLIENT_ID })
+    .then(response => {
+
+      const { email_verified, name, email, jti, given_name } = response.payload;
+      if (email_verified) {
+        User.findOne({ email }).exec((err, user) => {
+          if (user) {
+           
+            user.generateToken((err, user) => {
+              if (err) return res.status(400).send(err);
+              res.status(200).json({
+                  loginSuccess: true, userId: user._id,
+                  tokenExp: user.tokenExp, token: user.token,
+                  msg: "로그인에 성공했습니다."
+              });
+            });
+          } else {
+            let lastname = given_name;
+            let password = jti;
+            user = new User({ name, email, lastname, password });
+            user.save((err, user) => {
+              if (err) {
+                return res.status(400).json({
+                  loginSuccess: false,
+                  error: err
+                });
+              }
+              user.generateToken((err, user) => {
+                if (err) return res.status(400).send(err);
+                res.status(200).json({
+                    loginSuccess: true, userId: user._id,
+                    tokenExp: user.tokenExp, token: user.token,
+                    msg: "가입에 성공했습니다."
+                });
+              });
+            });
+          }
         });
+      } else {
+        return res.status(400).json({
+          error: "Google login failed. Try again."
+        });
+      }
     });
 });
 router.get("/usersindex",(req,res)=>{
@@ -84,51 +126,6 @@ router.get("/usersindex",(req,res)=>{
     })
  })
 
-<<<<<<< HEAD
-
- router.get('/naver', (req, res) =>{
-   console.log('naver서버 접속')
-   api_url = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + client_id + '&redirect_uri=' + redirectURI + '&state=' + state;
-   res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
-   res.end("<a href='"+ api_url + "'><img height='50' src='http://static.nid.naver.com/oauth/small_g_in.PNG'/></a>");
- });
- router.get('/naver/callback', (req, res) => {
-   console.log('naver/callback서버접속')
-    code = req.query.code;
-    state = req.query.state;
-    api_url = 'https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id='
-     + client_id + '&client_secret=' + client_secret + '&redirect_uri=' + redirectURI + '&code=' + code + '&state=' + state;
-    
-     var request = require('request');
-     var options = {
-        url: api_url,
-        headers: {'X-Naver-Client-Id':client_id, 'X-Naver-Client-Secret': client_secret}
-     };  
-   
-
-     request.get(options, function (error, response, body) {
-     
-      if (!error && response.statusCode == 200) {
-       
-        res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
-        res.end(body);
-      } else {
-       
-        res.status(response.statusCode).end();
-        console.log('error = ' + response.statusCode);
-      }
-    });
-  });
-//   router.listen(3000, function () {
-//    console.log('http://127.0.0.1:3000/naverlogin app listening on port 3000!');
-//  });
-
-
 
 module.exports = router;
 
-=======
- 
-
-module.exports = router;
->>>>>>> a3db11a93004069e26574799ef608aa654ffdfb5
