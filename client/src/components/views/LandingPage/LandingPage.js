@@ -6,6 +6,9 @@ import ImageSlider from '../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
 import {regions} from './Sections/Datas';
 import SearchFeature from './Sections/SearchFeature'
+import '../../../index.css';
+// import imgA from './1.jpg';
+
 
 function LandingPage() {
     const [Products, setProducts] = useState([])
@@ -102,22 +105,22 @@ function LandingPage() {
     
     return (
        <div style={{width:'75%',margin:'3rem auto'}}>
-           <CheckBox list = {regions} handleFilters={filters => handleFilters(filters,"regions")} />
-
-          
-          
-          
             <div style={{textAlign:'center'}}>
-                <h2>고객 맞춤 주문 제작 케이크
-                    <Icon type="rocket"/>
+                    <h2 className ="title"><Icon type="smile"/>&nbsp;&nbsp;고객 맞춤 주문 제작 케이크&nbsp;&nbsp;
+                <Icon type="smile"/>
                 </h2>
             </div>
-
+        
             <div style={{display:'flex', justifyContent:'flex-end',margin:'1rem auto'}}>
                 <SearchFeature
                     refreshFunction={updateSearchTerm}
                 /> 
             </div>
+            <div className="container">
+                 {/* <img src="imgA" /> */}
+            </div>
+            <br/>
+            <CheckBox list = {regions} handleFilters={filters => handleFilters(filters,"regions")} /><br/>
 
                 <Row gutter={[16,16]}>
                     {renderCards}
