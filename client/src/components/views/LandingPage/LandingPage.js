@@ -105,7 +105,6 @@ function LandingPage() {
     
     return (
        <div style={{width:'75%',margin:'3rem auto'}}>
-           <CheckBox list = {regions} handleFilters={filters => handleFilters(filters,"regions")} />
             <div style={{textAlign:'center'}}>
                     <h2 className ="title"><Icon type="smile"/>&nbsp;&nbsp;고객 맞춤 주문 제작 케이크&nbsp;&nbsp;
                 <Icon type="smile"/>
