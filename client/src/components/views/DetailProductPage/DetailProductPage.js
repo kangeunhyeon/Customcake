@@ -11,7 +11,7 @@ function DetailProductPage(props) {
     const productId = props.match.params.productId
     const variable = {productId: productId}
     const [Product, setProduct] = useState({})
-    const [CommentLists, setCommentLists] = useState([])
+    const [Comments, setComments] = useState([])
     
 
     useEffect(() => {
@@ -27,7 +27,7 @@ function DetailProductPage(props) {
         axios.post('/api/comment/getComments',variable)  
             .then(response=>{
                 if(response.data.success){
-                    setCommentLists(response.data.comments)
+                    setComments(response.data.comments)
                 }else{
                     alert('코멘트 정보를 가져오지 못헀습니다.')
                 }
@@ -37,7 +37,7 @@ function DetailProductPage(props) {
     // 댓글이 등록될시 Comments State에 concat으로 붙여져서 추가한 댓글이 보여지게 됨
     // 자식 컴포넌트 (Comment.js, SingleComment)에 props로 주어짐
     const refreshFunction = (newComment) =>{
-        setCommentLists(CommentLists.concat(newComment))
+        setComments(Comments.concat(newComment))
     }
     return (
             <div style={{ width: '100%', padding: '3rem 4rem'}}>
@@ -62,7 +62,7 @@ function DetailProductPage(props) {
             </Row>
             
         {/* Conments */}
-        <Comment refreshFunction={refreshFunction} CommentLists={CommentLists} postId={productId} />
+        <Comment refreshFunction={refreshFunction} commentLists={Comments} postId={productId} />
                     
             </div>
         )
