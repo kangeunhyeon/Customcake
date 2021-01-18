@@ -14,6 +14,7 @@ function ProductImage(props) {
           thumbnail: `http://localhost:5000/${item}`,
         });
       });
+      
       setImages(images);
     }
   }, [props.detail]);

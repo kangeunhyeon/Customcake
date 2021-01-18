@@ -10,31 +10,31 @@ const { TextArea } = Input;
 const Regions = [
     {
         key: 1,
-        value: "디자인1"
+        value: "강남구"
     },
     {
         key: 2,
-        value: "디자인2"
+        value: "서초주"
     },
     {
         key: 3,
-        value: "디자인3"
+        value: "광진구"
     },
     {
         key: 4,
-        value: "디자인4"
+        value: "영등포구"
     },
     {
         key: 5,
-        value: "디자인5"
+        value: "강서구"
     },
     {
         key: 6,
-        value: "디자인6"
+        value: "종로구"
     },
     {
         key: 7,
-        value: "디자인7"
+        value: "마포구"
     }
 ]
 

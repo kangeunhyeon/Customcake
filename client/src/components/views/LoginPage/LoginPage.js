@@ -5,9 +5,9 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Form, Icon, Input, Button, Checkbox, Typography } from 'antd';
 import { useDispatch } from "react-redux";
-import GoogleLogin from 'react-google-login';
+import GoogleLoginPage from "./Sections/GoogleLoginPage.js";
 import axios from "axios";
-
+// import NaverLoginPage from "./Sections/NaverLoginPage";
 const { Title } = Typography;
 
 function LoginPage(props) {
@@ -17,7 +17,7 @@ function LoginPage(props) {
     axios.get(`/api/users/usersindex`)
         .then(response => {
             if(response.data.success){
-                console.log('response.data.userindex',response.data.userindex[0].authcheck)
+                console.log('response.data.userindex',response.data.userindex[0])
                 setUsersAuth(response.data.userindex)
             }else{
                 alert('상세 정보 가져오기를 실패했습니다.')
@@ -27,14 +27,11 @@ function LoginPage(props) {
  
   const dispatch = useDispatch();
   const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
-
   const [formErrorMessage, setFormErrorMessage] = useState('')
   const [rememberMe, setRememberMe] = useState(rememberMeChecked)
-
   const handleRememberMe = () => {
     setRememberMe(!rememberMe)
   };
-
   const initialEmail = localStorage.getItem("rememberMe") ? localStorage.getItem("rememberMe") : '';
 
   return (
@@ -63,6 +60,8 @@ function LoginPage(props) {
             .then(response => {
               //console.log('asds',dataToSubmit)
               if (response.payload.loginSuccess) {
+                window.localStorage.setItem('x_token', response.payload.token);
+                window.localStorage.setItem('x_tokenExp', response.payload.tokenExp);
                 window.localStorage.setItem('userId', response.payload.userId);
                 if (rememberMe === true) {
                   window.localStorage.setItem('rememberMe', values.id);
@@ -83,12 +82,13 @@ function LoginPage(props) {
                 }
                 }
 
-                
+                window.location.reload()
               } else {
                 setFormErrorMessage('Check out your Account or Password again')
               }
             })
             .catch(err => {
+              console.log(err)
               setFormErrorMessage('Check out your Account or Password again')
               setTimeout(() => {
                 setFormErrorMessage("")
@@ -112,10 +112,10 @@ function LoginPage(props) {
         } = props;
         return (
           <div className="app">
-
+            <div>
             <Title level={2}>Log In</Title>
+            
             <form onSubmit={handleSubmit} style={{ width: '350px' }}>
-              
               <Form.Item required>
                 <Input
                   id="email"
@@ -165,17 +165,15 @@ function LoginPage(props) {
                   <Button type="primary" htmlType="submit" className="login-form-button" style={{ minWidth: '100%' }} disabled={isSubmitting} onSubmit={handleSubmit}>
                     Log in
                 </Button>
+                
                 </div>
                 Or <a href="/register">register now!</a>
               </Form.Item>
-              <GoogleLogin
-                clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-                buttonText="Login"
-                // onSuccess={responseGoogle}
-                // onFailure={responseGoogle}
-                cookiePolicy={'single_host_origin'}
-              />
+            
             </form>
+            <GoogleLoginPage/>
+            </div>
+          
           </div>
         );
       }}

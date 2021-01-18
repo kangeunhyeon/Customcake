@@ -13,8 +13,8 @@ function LikeDislike(props) {
     let variables = {}
     let writerId = props.writerId
 
-    if(props.product){
-        variables = {productId: props.productId, userId: props.userId}
+    if(props.Product){
+        variables = {ProductId: props.ProductId, userId: props.userId}
        
     }else{
         variables = {commentId: props.commentId, userId: props.userId}
@@ -126,7 +126,7 @@ function LikeDislike(props) {
 
     return (
         <div>
-            <span key="comment-basic-like" style={props.productId ? {fontSize:'18px',paddingRight:'18px'}:{paddingRight: '10px'}}>
+            <span key="comment-basic-like" style={props.ProductId ? {fontSize:'18px',paddingRight:'18px'}:{paddingRight: '10px'}}>
                 <Tooltip title="Like">
                     <Icon type="like"
                         theme={LikeAction === 'liked' ? 'filled' : 'outlined'}
@@ -135,7 +135,7 @@ function LikeDislike(props) {
                 </Tooltip>
                 <span style={{paddingLeft:'8px', cursor:'auto'}}>{Likes}</span>
             </span>
-            <span key="comment-basic-dislike" style={props.productId ? {fontSize:'18px',paddingRight:'18px'}:{paddingRight: '10px'}}>
+            <span key="comment-basic-dislike" style={props.ProductId ? {fontSize:'18px',paddingRight:'18px'}:{paddingRight: '10px'}}>
                 <Tooltip title="Dislike">
                     <Icon type="dislike"
                         theme={DislikeAction === 'disliked' ? 'filled' : 'outlined'}
