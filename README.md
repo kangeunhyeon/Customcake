@@ -21,6 +21,7 @@
   - search  
   - category  
 
+  수업 기간 : 2021 - 01 - 04 ~ 2021 - 01 - 18
   
 졸부팀 :clap: :thumbsup: :muscle:  
 
