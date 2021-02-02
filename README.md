@@ -1,6 +1,29 @@
-2020 동계 창의학기제 
-주제 : 사용자를 위한 Customcake 리뷰 및 주문제작 홈페이지 
-1.config 폴더 안에 dev.js 파일 만들기
-2.mongoDB 정보를 dev.js 파일에 넣습니다.
-3.루트 디렉토리 (다운로드 서버 종속성)에 "npm install"을 입력합니다.
-4.클라이언트 디렉토리에 "npm install"을 입력합니다 (프런트 엔드 종속성 다운로드)...
+## 졸부(졸업을 부탁해)팀 - 2021 동계 창의학기제 :mortar_board:  
+
+창의 주제 : 사용자를 위한 커스텀 케이크 주문 제작 및 리뷰 웹 사이트 :birthday:  
+  
+사용자가 SNS(ex. 인스타그램)메시지를 통한 번거로운 케이크 주문 제작을 해결하고,    
+업체의 케이크마다 사용자가 등록한 리뷰를 통해 케이크 정보를 알 수 있다.  
+  
+#mongodb #react #express #nodejs #mern stack #pull stack
+
+1. 인프런 강의를 보면서 공부함.  
+2. boilerplate 사용.  
+3. antd design으로 디자인 함.  
+4. 스스로 문제를 해결하기 위해 구글링과 참고문서를 찾아봄.  
+  
+:bulb: 주요 기능 : 
+  - login, signup, social(google login)  
+  - list  
+  - detail page  
+  - review  
+  - basket  
+  - search  
+  - category  
+
+  
+:clap: :thumbsup: :muscle:  
+
+
+  
+
